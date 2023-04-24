@@ -1,0 +1,46 @@
+Relational schema
+
+Issuer(issuer_id(PK), issuer_country, issuer_name, issued_books_quantity)
+Kitap(ISBN(PK), issuer_id(FK), kitap_title, pages, release_date)
+Published(issuer_id, ISBN)
+Tapsyrys_info(info_id(PK), ISBN(FK), price, tapsyrys_id(FK))
+Includes(info_id, ISBN)
+Tapsyrys(tapsyrys_id(PK), tapsyrys_date, oqyrman_id(FK), delivery_id(FK), qyzmetker_id(FK), meken-zhay_id(FK))
+Contains(tapsyrys_id, info_id)
+Delivery(delivery_id(PK), delivery_type, expense)
+Sent Using(delivery_id, tapsyrys_id)
+Oqyrman(oqyrman_id(PK), oqyrman_name, surname, email)
+Oqyrman_meken-zhay(oqyrman_id(PK)(FK), meken-zhay_id(PK)(FK))	
+Has(Oqyrman.oqyrman_id, Oqyrman_meken-zhay.meken-zhay_id, Oqyrman_meken-zhay.oqyrman_id)
+Meken-zhay(meken-zhay_id(PK), koshe, memleket, home_no, qala)
+Refers to(Meken-zhay.meken_zhay_id, Oqyrman_meken-zhay.meken-zhay_id, Oqyrman_meken-zhay.oqyrman_id)
+Shipped to(meken-zhay_id,oqyrman_id, tapsyrys_id)
+Tolem(tolem_id(PK), status, oqyrman_id(FK), total_amount, payment_type, created_date)
+Settle(tolem_id, oqyrman_id)
+Qyzmetker(qyzmetker_id(PK), name, surname)
+Takes(qyzmetker_id, tapsyrys_id)
+Qyzmetker_contact(contact_id(PK), qyzmetker_id(FK), phone_no, email)
+Provides(contact_id, qyzmetker_id)
+
+
+Relations between tables
+
+
+1.Issuer - Kitap: One-to-Many(1:M):
+An issuer may publish several books, but one book is published by only one issuer.
+2.Tapsyrys_info - Kitap: Many-to-One(M:1):
+One information can include only one book, but one book can be written in more than one ordering information.
+3.Qyzmetker - Qyzmetker_contact: One-to-One(1:1):
+One employee can have only one contact information, and one contact information applies to only one employee.
+4.Tapsyryrs - Tapsyrys_info: One-to-Many(1:M):
+One order may include several information, but one order information applies only to one order.
+5.Tapsyrys - Delivery:Many-to-One(M:1):
+One order can be delivered by one delivery type only, but one delivery type can be used in different orders
+6.Tapsyrys - Qyzmetker:Many-to-One(M:1):
+One order is taken by one worker, but one worker can take several orders
+8. Tapsyrys - Oqyrman_meken_zhay:
+One order can be created by one customer and sent to a specific address, but a customer can order multiple times to the same address
+9.Oqyrman-Meken_zhay:Many-to-Many(M:M):
+Multiple addresses can be associated with a single customer, and multiple customers can be associated with a single address.
+10.Oqyrman-Tolem:One-to-Many(1:M):
+The buyer can make several transactions, but one payment information refers only to one buyer.
