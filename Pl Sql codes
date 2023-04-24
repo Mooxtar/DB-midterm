@@ -1,0 +1,123 @@
+The proper explanation is in video
+
+Queries and operations that used in our project
+
+
+1. Grouping our books by issuers
+create or replace PROCEDURE kitap_by_issuer IS
+BEGIN
+  FOR k IN (SELECT i.issuer_name, COUNT(b.isbn) AS total_books
+              FROM kitap b
+              INNER JOIN issuer i ON b.issuer_id = i.issuer_id
+              GROUP BY i.issuer_name
+              ORDER BY total_books)
+  LOOP
+    DBMS_OUTPUT.PUT_LINE(k.issuer_name || ' issued ' || k.total_books || ' kitap.');
+  END LOOP;
+END;
+
+Description:
+This procedure groups our books by publisher to see the number of books in our store by individual publisher.
+To do this we use INNER JOIN to combine data from two tables - KITAP and ISSUER.
+Then we just use GROUP BY to grouping by issuers.ORDER BY is needed to sort publishers by number of books published.
+
+Here is sample query for checking this procedure:
+BEGIN
+kitap_by_issuer;
+END;
+
+2.The number of all our customers
+create or replace FUNCTION count_oqyrmans
+RETURN NUMBER
+IS
+  t_count NUMBER;
+BEGIN
+  SELECT COUNT(*) INTO t_count FROM oqyrman;
+  RETURN t_count;
+END;
+
+Description:
+This function counts all current customers that are recorded in our database.
+To save the number of buyers, we need to create a variable (in our case t_count) number.Then using COUNT(*) we save the number of rows 
+(respectively the number of buyers) in our created variable. Then we return it. That's how our function works.
+
+3. The number of publishers that have been updated..
+create or replace PROCEDURE issuer_updating (
+  c_issuer_id IN Issuer.issuer_id%TYPE,
+  c_issued_books_quantity IN Issuer.issued_books_quantity%TYPE
+  
+)
+IS
+BEGIN
+  UPDATE Issuer
+  SET issued_books_quantity = c_issued_books_quantity
+  WHERE issuer_id = c_issuer_id;
+  DBMS_OUTPUT.PUT_LINE('Number of rows affected: ' || SQL%ROWCOUNT);
+END;
+
+Description: 
+This procedure counts the number of updated publisher data. When a publisher puts their new book on sale, or when a publisher removes 
+their book from sale, the procedure will count the number of updated rows.
+To do this we need a very handy system function SQL%ROWCOUNT , which returns the number of rows affected in the query. 
+
+4.Custom Exception , which is triggered when a short street name is found.
+
+DECLARE
+   c_koshe Meken_zhay.koshe%type; 
+   c_home_no Meken_zhay.home_no%type; 
+   c_qala Meken_zhay.qala%type;
+   c_memleket Meken_Zhay.memleket%type;  
+   ex_short_street_name  EXCEPTION; 
+BEGIN
+   FOR i IN (SELECT meken_zhay_id, koshe, home_no, qala, memleket FROM Meken_zhay ORDER BY meken_zhay_id)
+   LOOP
+      c_koshe := i.koshe;
+      c_home_no := i.home_no;
+      c_qala := i.qala;
+      c_memleket := i.memleket;
+      
+      IF LENGTH(c_koshe) < 6 THEN 
+         RAISE ex_short_street_name; 
+      ELSE 
+         DBMS_OUTPUT.PUT_LINE ('Street: ' || c_koshe);
+         DBMS_OUTPUT.PUT_LINE ('Home number: ' || c_home_no);
+         DBMS_OUTPUT.PUT_LINE ('City: ' || c_qala);
+         DBMS_OUTPUT.PUT_LINE ('Country: ' || c_memleket);
+      END IF; 
+   END LOOP;
+   
+EXCEPTION 
+   WHEN ex_short_street_name THEN 
+      dbms_output.put_line('Too short street name');   
+END;
+
+Description:
+When you run a SELECT query, if the system finds a street name shorter than 6 characters, the system raises an exception 
+and displays a message. To make the exception work, we run our data through a FOR loop. The query checks each line. If everything is normal, 
+then the query shows the full address of the user. If the street is shorter than 6 characters, an exception is thrown.
+
+5.Counting all payments before adding a new payment
+
+create or replace TRIGGER tolem_trig
+BEFORE INSERT ON Tolem
+FOR EACH ROW
+DECLARE
+ccount number;
+PRAGMA AUTONOMOUS_TRANSACTION;
+BEGIN
+ SELECT COUNT(*) into ccount
+ FROM TOLEM;
+ commit;
+ DBMS_OUTPUT.PUT_LINE('Number of rows in Payment table before inserting : ' || ccount);
+END;
+
+Description:
+This trigger is called before a new row is added to the TOLEM table. i.e., when the customer makes a payment, the payment data is written to the 
+table. And the trigger is called to count all payments before the insertion.
+We create a variable ccount to save all rows in the TOLEM table there. 
+And output it in output. Additionally we used PRAGMA AUTONOMOUS_TRANSACTION in this trigger. It is used to commit the current transaction and 
+start a new one immediately. Changing the same table without this directive can cause an error.
+
+
+
+
