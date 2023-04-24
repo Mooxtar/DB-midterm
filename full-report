@@ -1,0 +1,365 @@
+* Database Management Systems Midterm Project
+* Book Store 'Kitap Market'
+
+* Full report
+
+* Done by: Mukhtar Rabayev, Yeldos Sanabek, Akarys Yerdali, Sanzhar Bakirbayev
+
+* Business process: 
+
+  Our project’s main goal is to implement a database for an online bookstore called ‘Kitap Market’. 
+
+  Firstly, book issuers are supplying us with books they published. After that, customers, readers could order books from our
+market after they chose what they liked. In order to be executed bookstore administrators must know addresses of their customers,
+we must mention that one reader could have more than one living address. So, the customer is making an order, and our employee takes that order,
+after all operations are correct, the reader makes a payment.  Every employee in our company has unique contacts. After all these operations are 
+executed we start to deliver our customers’ orders with any type or transportation. And finally, we have happy readers and happy company.
+
+* Tables
+
+All tables are in git files
+
+* Presentation
+
+Presentation is in one of git files called "midka.pdf"
+
+* Relational schema
+
+Issuer(issuer_id, issuer_country, issuer_name, issued_books_quantity)
+Kitap(ISBN, issuer_id(FK), kitap_title, pages, release_date)
+Published(issuer_id, ISBN)
+Tapsyrys_info(info_id, ISBN(FK), price, tapsyrys_id(FK))
+Includes(info_id, ISBN)
+Tapsyrys(tapsyrys_id, tapsyrys_date, oqyrman_id(FK), delivery_id(FK), qyzmetker_id(FK), meken-zhay_id(FK))
+Contains(tapsyrys_id, info_id)
+Delivery(delivery_id, delivery_type, expense)
+Sent Using(delivery_id, tapsyrys_id)
+Oqyrman(oqyrman_id, oqyrman_name, surname, email)
+Oqyrman_meken-zhay(oqyrman_id(FK), meken-zhay_id(FK))	
+Has(Oqyrman.oqyrman_id, Oqyrman_meken-zhay.meken-zhay_id, Oqyrman_meken-zhay.oqyrman_id)
+Meken-zhay(meken-zhay_id, koshe, memleket, home_no, qala)
+Refers to(Meken-zhay.meken_zhay_id, Oqyrman_meken-zhay.meken-zhay_id, Oqyrman_meken-zhay.oqyrman_id)
+Shipped to(meken-zhay_id,oqyrman_id, tapsyrys_id)
+Tolem(tolem_id, status, oqyrman_id(FK), total_amount, payment_type, created_date)
+Settle(tolem_id, oqyrman_id)
+Qyzmetker(qyzmetker_id, name, surname)
+Takes(qyzmetker_id, tapsyrys_id)
+Qyzmetker_contact(contact_id, qyzmetker_id(FK), phone_no, email)
+Provides(contact_id, qyzmetker_id)
+
+* Relations between tables
+
+The proper explanation is in video
+
+1.Issuer - Kitap: One-to-Many(1:M):
+An issuer may publish several books, but one book is published by only one issuer.
+2.Tapsyrys_info - Kitap: Many-to-One(M:1):
+One information can include only one book, but one book can be written in more than one ordering information.
+3.Qyzmetker - Qyzmetker_contact: One-to-One(1:1):
+One employee can have only one contact information, and one contact information applies to only one employee.
+4.Tapsyryrs - Tapsyrys_info: One-to-Many(1:M):
+One order may include several information, but one order information applies only to one order.
+5.Tapsyrys - Delivery:Many-to-One(M:1):
+One order can be delivered by one delivery type only, but one delivery type can be used in different orders
+6.Tapsyrys - Qyzmetker:Many-to-One(M:1):
+One order is taken by one worker, but one worker can take several orders
+8. Tapsyrys - Oqyrman_meken_zhay:
+One order can be created by one customer and sent to a specific address, but a customer can order multiple times to the same address
+9.Oqyrman-Meken_zhay:Many-to-Many(M:M):
+Multiple addresses can be associated with a single customer, and multiple customers can be associated with a single address.
+10.Oqyrman-Tolem:One-to-Many(1:M):
+The buyer can make several transactions, but one payment information refers only to one buyer.
+
+* ERD
+
+ERD image is in one of git files called "ERD_dbms"
+
+* Normal Forms of each table
+
+Issuer table
+
+1NF
+The Issuer info table is in the first normal form since all of the table's characteristics contain just one datum in each row,
+rather than numerous in one.
+
+2NF 
+All characteristics are dependent on the primary key, which causes the table to be in the second normal form.All attributes 
+(issuer_country, issuer_name, issued_books_quantity), with the exception of the main key, allow for repetition of data on a single line.
+
+3NF
+
+Because there is no transitive relationship between the attributes, the table is in third normal form. That is,
+in the issuer_country table, issuer_country is independent of issuer_name, because one country can have multiple issuers.
+
+
+
+
+Kitap table
+
+1NF
+The Kitap table features a single datum in each row rather than multiples, suggesting that it is in the first normal form.
+
+2NF 
+All attributes are dependent on the primary key, which causes the table to be in the second normal form.The data for all
+attributes—issuer_id(FK), kitap_title, pages, and release_date—other than the primary key can be repeated on a single line.
+
+3NF 
+In the KITAP table, the ISBN number is utilized as the main key to uniquely identify each book. The main key determines the
+columns issuer_id, kitap_title, pages, and release_date. The table has no indirect dependencies, making it conform to the third normal form (3NF).
+
+
+
+
+
+
+
+
+Tapsyrys_info table
+1NF
+The delivery table fits under the first normal form because there is just one set of data in each row. As a result, there is an 
+atomic value for each column in this table.
+
+
+2NF 
+The table takes on its second normal form. It does not contradict its guiding principle (all attributes must be dependent on the primary key). 
+We have repeated isbn, but the prices of these book vary. As a result, both attributes are dependent on info_id.
+
+3NF
+
+The table belongs to the third normal form. The table must not contain transitive dependencies between attributes, according to the
+third normal form principle. And the table doesn't break it because there's no transitive dependency between info_id, isbn, and price.
+
+
+
+
+
+Qyzmetker table
+
+1NF
+The Qyzmetker table is in the first normal form because all attributes of the table have only one datum in each row, not several in one.
+
+2NF 
+The table is in the second normal form because all attributes depend on the primary key.Because all attributes except the primary key 
+( name, surname) their data  can be repeated.
+For example, take the attribute first name, as you already know, there are people with the same first name also in rare cases with the 
+same last name. Even rarer are people with the same first and last name, but it is possible. But the identifier will never be repeated
+
+3NF 
+Because there is no transitive relationship between the attributes, the table is in third normal form. For example, the attribute 
+"name" is independent of the attribute "surname" (both can be repeated)
+
+
+
+
+
+Qyzmetker_contact table
+
+1NF
+The Qyzmetker_contact table is in the first normal form because all attributes of the table have only one datum in each row, not several in one.
+
+2NF 
+The table is in the second normal form because all attributes depend on the primary key.Because all attributes except the primary key 
+( qyzmetker_id(FK), phone_no, email),  their data  can be repeated.
+Example: One worker can have a work phone and his own personal phone. qyzmekter_id can use corporate mail, which can be accessed by several 
+people, as well as personal mail So only the contact id remains unrepeatable
+
+
+3NF
+Because there is no transitive relationship between the attributes, the table is in third normal form. Example: With qyzmetker_id we can 
+find two phone or email addresses. And with email we can find several qyzmetker_id which can be used by several people (one work email). In this 
+way the non-key attributes depend only on the primary key
+
+
+
+Tapsyrys table:
+
+1NF
+The Tapsyrys table is in the first normal form because all attributes of the table have only one datum in each row, not several in one.
+
+2NF 
+The table is in the second normal form because all attributes depend on the primary key.Because all attributes except the primary key 
+(tapsyrys_date, oqyrman_id(FK), delivery_id(FK), qyzmetker_id(FK),
+meken-zhay_id(FK)), their data can be repeated. For example, one customer can make several purchases to the same address on the same day, 
+and one employee can take several orders.So it all depends on the tapsyrys_id.
+
+3NF
+The table is in the third normal form because it does not have a transitive relationship between attributes.That is, for example, in the table 
+meken_zhay_id does not depend on oqyrman_id, as one address can be several people (for example, family members).
+
+
+Delivery table:
+1NF
+Because there are just one set of data in each row of the delivery table, it falls under the first normal form. Consequently, every column in 
+this table has an atomic value.
+
+
+2NF
+The table enters the second normal form. It does not violate its principle (all attributes must depend on the primary key). We have delivery 
+types that are repeated, but the costs of this delivery are different. Accordingly, both attributes depend on delivery_id.
+
+3NF
+The table is part of the third normal form. Principle of the third normal form: the table must not contain transitive dependencies between 
+attributes. And the table does not violate it, because there is no transitive dependence between delivery_id - delivery_type - expense.
+
+Oqyrman table:
+1NF
+The rules of the first normal form: The table should not contain duplicate rows, each cell of the table stores one non-compound value.
+And these rules are not violated by the table, so it is included in this normal form.
+
+2NF
+For a table to be in 2NF , we must have a primary key and all attributes must depend on it. We have the buyer's first name, last name and mail.  
+The first and last names can be repeated in rare cases. And also for example in one family there are cases when they use the same mail. 
+Accordingly, it may be repeated. So all the attributes depend on the id. 
+
+3NF
+The cases with attributes were described above, which means that there cannot be a transitive relationship between them.
+
+Meken_zhay table:
+
+In this table, each row has non-component values, which means that it is in 1NF.All attributes we have depend only on the primary key 
+(meken_zhay_id). And we have no transitive dependencies between attributes. Which means that the table is both in 2NF and in 3NF.
+
+
+Tolem table
+
+1NF
+The Tolem table is in the first normal form because all attributes of the table have only one datum in each row, not several in one.
+
+2NF 
+The table is in the second normal form because all attributes depend on the primary key.Because all attributes except the primary key 
+(status, oqyrman_id(FK), total_amount, payment_type, created_date),  their data  can be repeated.
+
+Example: One oqyrman_id can make a purchase for a different amount on several occasions. From this we can conclude that with oqyrman_id 
+you can find several lines of data. This also applies to other attributes
+
+
+3NF
+Because there is no transitive relationship between the attributes, the table is in third normal form. Example: You will not be able to 
+find a non-key attribute with a non-key attribute (the data will be repeated). Only tolem_id can primary key
+
+
+
+
+* Pl/SQL codes
+The proper explanation is in presentation and in video
+
+1. Grouping our books by issuers
+create or replace PROCEDURE kitap_by_issuer IS
+BEGIN
+  FOR k IN (SELECT i.issuer_name, COUNT(b.isbn) AS total_books
+              FROM kitap b
+              INNER JOIN issuer i ON b.issuer_id = i.issuer_id
+              GROUP BY i.issuer_name
+              ORDER BY total_books)
+  LOOP
+    DBMS_OUTPUT.PUT_LINE(k.issuer_name || ' issued ' || k.total_books || ' kitap.');
+  END LOOP;
+END;
+
+Description:
+This procedure groups our books by publisher to see the number of books in our store by individual publisher.
+To do this we use INNER JOIN to combine data from two tables - KITAP and ISSUER.
+Then we just use GROUP BY to grouping by issuers.ORDER BY is needed to sort publishers by number of books published.
+
+Here is sample query for checking this procedure:
+BEGIN
+kitap_by_issuer;
+END;
+
+2.The number of all our customers
+create or replace FUNCTION count_oqyrmans
+RETURN NUMBER
+IS
+  t_count NUMBER;
+BEGIN
+  SELECT COUNT(*) INTO t_count FROM oqyrman;
+  RETURN t_count;
+END;
+
+Description:
+This function counts all current customers that are recorded in our database.
+To save the number of buyers, we need to create a variable (in our case t_count) number.Then using COUNT(*) we save the number
+of rows (respectively the number of buyers) in our created variable. Then we return it. That's how our function works.
+
+3. The number of publishers that have been updated..
+create or replace PROCEDURE issuer_updating (
+  c_issuer_id IN Issuer.issuer_id%TYPE,
+  c_issued_books_quantity IN Issuer.issued_books_quantity%TYPE
+  
+)
+IS
+BEGIN
+  UPDATE Issuer
+  SET issued_books_quantity = c_issued_books_quantity
+  WHERE issuer_id = c_issuer_id;
+  DBMS_OUTPUT.PUT_LINE('Number of rows affected: ' || SQL%ROWCOUNT);
+END;
+
+Description: 
+This procedure counts the number of updated publisher data. When a publisher puts their new book on sale, or when a publisher 
+removes their book from sale, the procedure will count the number of updated rows.
+To do this we need a very handy system function SQL%ROWCOUNT , which returns the number of rows affected in the query. 
+
+4.Custom Exception , which is triggered when a short street name is found.
+
+DECLARE
+   c_koshe Meken_zhay.koshe%type; 
+   c_home_no Meken_zhay.home_no%type; 
+   c_qala Meken_zhay.qala%type;
+   c_memleket Meken_Zhay.memleket%type;  
+   ex_short_street_name  EXCEPTION; 
+BEGIN
+   FOR i IN (SELECT meken_zhay_id, koshe, home_no, qala, memleket FROM Meken_zhay ORDER BY meken_zhay_id)
+   LOOP
+      c_koshe := i.koshe;
+      c_home_no := i.home_no;
+      c_qala := i.qala;
+      c_memleket := i.memleket;
+      
+      IF LENGTH(c_koshe) < 6 THEN 
+         RAISE ex_short_street_name; 
+      ELSE 
+         DBMS_OUTPUT.PUT_LINE ('Street: ' || c_koshe);
+         DBMS_OUTPUT.PUT_LINE ('Home number: ' || c_home_no);
+         DBMS_OUTPUT.PUT_LINE ('City: ' || c_qala);
+         DBMS_OUTPUT.PUT_LINE ('Country: ' || c_memleket);
+      END IF; 
+   END LOOP;
+   
+EXCEPTION 
+   WHEN ex_short_street_name THEN 
+      dbms_output.put_line('Too short street name');   
+END;
+
+Description:
+When you run a SELECT query, if the system finds a street name shorter than 6 characters, the system raises an exception and displays 
+a message. To make the exception work, we run our data through a FOR loop. The query checks each line. If everything is normal, then the 
+query shows the full address of the user. If the street is shorter than 6 characters, an exception is thrown.
+
+5.Counting all payments before adding a new payment
+
+create or replace TRIGGER tolem_trig
+BEFORE INSERT ON Tolem
+FOR EACH ROW
+DECLARE
+ccount number;
+PRAGMA AUTONOMOUS_TRANSACTION;
+BEGIN
+ SELECT COUNT(*) into ccount
+ FROM TOLEM;
+ commit;
+ DBMS_OUTPUT.PUT_LINE('Number of rows in Payment table before inserting : ' || ccount);
+END;
+
+Description:
+This trigger is called before a new row is added to the TOLEM table. i.e., when the customer makes a payment, the payment data is written 
+to the table. And the trigger is called to count all payments before the insertion.
+We create a variable ccount to save all rows in the TOLEM table there. 
+And output it in output. Additionally we used PRAGMA AUTONOMOUS_TRANSACTION in this trigger. It is used to commit the current transaction 
+and start a new one immediately. Changing the same table without this directive can cause an error.
+
+
+
+* Youtube-video
+
+link: https://youtu.be/tMEOJffKwQk
