@@ -1,0 +1,169 @@
+Issuer table
+
+1NF
+The Issuer info table is in the first normal form since all of the table's characteristics contain just one datum in each row, 
+rather than numerous in one.
+
+2NF 
+All characteristics are dependent on the primary key, which causes the table to be in the second normal form.All attributes 
+(issuer_country, issuer_name, issued_books_quantity), with the exception of the main key, allow for repetition of data on a single line.
+
+3NF
+
+Because there is no transitive relationship between the attributes, the table is in third normal form. That is, in the issuer_country table, 
+issuer_country is independent of issuer_name, because one country can have multiple issuers.
+
+
+
+
+Kitap table
+
+1NF
+The Kitap table features a single datum in each row rather than multiples, suggesting that it is in the first normal form.
+
+2NF 
+All attributes are dependent on the primary key, which causes the table to be in the second normal form.The data for all attributes—issuer_id(FK), 
+kitap_title, pages, and release_date—other than the primary key can be repeated on a single line.
+
+3NF 
+In the KITAP table, the ISBN number is utilized as the main key to uniquely identify each book. The main key determines the columns issuer_id,
+kitap_title, pages, and release_date. The table has no indirect dependencies, making it conform to the third normal form (3NF).
+
+
+
+
+
+
+
+
+Tapsyrys_info table
+1NF
+The delivery table fits under the first normal form because there is just one set of data in each row. As a result, there is an atomic value 
+for each column in this table.
+
+
+2NF 
+The table takes on its second normal form. It does not contradict its guiding principle (all attributes must be dependent on the primary key). 
+We have repeated isbn, but the prices of these book vary. As a result, both attributes are dependent on info_id.
+
+3NF
+
+The table belongs to the third normal form. The table must not contain transitive dependencies between attributes, according to the third normal 
+form principle. And the table doesn't break it because there's no transitive dependency between info_id, isbn, and price.
+
+
+
+
+
+Qyzmetker table
+
+1NF
+The Qyzmetker table is in the first normal form because all attributes of the table have only one datum in each row, not several in one.
+
+2NF 
+The table is in the second normal form because all attributes depend on the primary key.Because all attributes except the primary key ( name, surname) 
+their data  can be repeated.
+For example, take the attribute first name, as you already know, there are people with the same first name also in rare cases with the same last name. 
+Even rarer are people with the same first and last name, but it is possible. But the identifier will never be repeated
+
+3NF 
+Because there is no transitive relationship between the attributes, the table is in third normal form. For example, the attribute "name" is 
+independent of the attribute "surname" (both can be repeated)
+
+
+
+
+
+Qyzmetker_contact table
+
+1NF
+The Qyzmetker_contact table is in the first normal form because all attributes of the table have only one datum in each row, not several in one.
+
+2NF 
+The table is in the second normal form because all attributes depend on the primary key.Because all attributes except the primary key 
+( qyzmetker_id(FK), phone_no, email),  their data  can be repeated.
+Example: One worker can have a work phone and his own personal phone. qyzmekter_id can use corporate mail, which can be accessed by several 
+people, as well as personal mail So only the contact id remains unrepeatable
+
+
+3NF
+Because there is no transitive relationship between the attributes, the table is in third normal form. Example: With qyzmetker_id we can find 
+two phone or email addresses. And with email we can find several qyzmetker_id which can be used by several people (one work email). In this way 
+the non-key attributes depend only on the primary key
+
+
+
+Tapsyrys table:
+
+1NF
+The Tapsyrys table is in the first normal form because all attributes of the table have only one datum in each row, not several in one.
+
+2NF 
+The table is in the second normal form because all attributes depend on the primary key.Because all attributes except the primary key
+(tapsyrys_date, oqyrman_id(FK), delivery_id(FK), qyzmetker_id(FK),
+meken-zhay_id(FK)), their data can be repeated. For example, one customer can make several purchases to the same address on the same day, 
+and one employee can take several orders.So it all depends on the tapsyrys_id.
+
+3NF
+The table is in the third normal form because it does not have a transitive relationship between attributes.That is, for example, in the
+table meken_zhay_id does not depend on oqyrman_id, as one address can be several people (for example, family members).
+
+
+Delivery table:
+1NF
+Because there are just one set of data in each row of the delivery table, it falls under the first normal form. Consequently, every column in 
+this table has an atomic value.
+
+
+2NF
+The table enters the second normal form. It does not violate its principle (all attributes must depend on the primary key). We have delivery 
+types that are repeated, but the costs of this delivery are different. Accordingly, both attributes depend on delivery_id.
+
+3NF
+The table is part of the third normal form. Principle of the third normal form: the table must not contain transitive dependencies between 
+attributes. And the table does not violate it, because there is no transitive dependence between delivery_id - delivery_type - expense.
+
+Oqyrman table:
+1NF
+The rules of the first normal form: The table should not contain duplicate rows, each cell of the table stores one non-compound value.
+And these rules are not violated by the table, so it is included in this normal form.
+
+2NF
+For a table to be in 2NF , we must have a primary key and all attributes must depend on it. We have the buyer's first name, last name and mail. 
+The first and last names can be repeated in rare cases. And also for example in one family there are cases when they use the same mail. Accordingly, 
+it may be repeated. So all the attributes depend on the id. 
+
+3NF
+The cases with attributes were described above, which means that there cannot be a transitive relationship between them.
+
+Meken_zhay table:
+
+In this table, each row has non-component values, which means that it is in 1NF.All attributes we have depend only on the primary key 
+(meken_zhay_id). And we have no transitive dependencies between attributes. Which means that the table is both in 2NF and in 3NF.
+
+
+Tolem table
+
+1NF
+The Tolem table is in the first normal form because all attributes of the table have only one datum in each row, not several in one.
+
+2NF 
+The table is in the second normal form because all attributes depend on the primary key.Because all attributes except the primary key 
+(status, oqyrman_id(FK), total_amount, payment_type, created_date),  their data  can be repeated.
+
+Example: One oqyrman_id can make a purchase for a different amount on several occasions. From this we can conclude that with oqyrman_id you can 
+find several lines of data. This also applies to other attributes
+
+
+3NF
+Because there is no transitive relationship between the attributes, the table is in third normal form. Example: You will not be able to find a 
+non-key attribute with a non-key attribute (the data will be repeated). Only tolem_id can primary key
+
+
+
+
+
+
+
+
+
