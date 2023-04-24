@@ -1,0 +1,10 @@
+Business process: 
+
+Our project’s main goal is to implement a database for an online bookstore called ‘Kitap Market’. 
+
+Firstly, book issuers are supplying us with books they published. After that, customers, readers could order books from our market after
+they chose what they liked. In order to be executed bookstore administrators must know addresses of their customers, we must mention that
+one reader could have more than one living address. So, the customer is making an order, and our employee takes that order, after all operations
+are correct, the reader makes a payment.  Every employee in our company has unique contacts. After all these operations are executed we start 
+to deliver our customers’ orders with any type or transportation. And finally, we have happy readers and happy company.
+
